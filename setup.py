@@ -113,7 +113,7 @@ except (ImportError, OSError):
     # pypy emits an oserror
     _tkinter = None
 
-NAME = 'Pillow'
+NAME = 'Pillow-SIMD'
 PILLOW_VERSION = get_version()
 JPEG_ROOT = None
 JPEG2K_ROOT = None
@@ -618,7 +618,8 @@ class pil_build_ext(build_ext):
         exts = [(Extension("PIL._imaging",
                            files,
                            libraries=libs,
-                           define_macros=defs))]
+                           define_macros=defs,
+                           extra_compile_args=['-msse4']))]
 
         #
         # additional libraries
@@ -754,10 +755,10 @@ try:
     setup(name=NAME,
           version=PILLOW_VERSION,
           description='Python Imaging Library (Fork)',
-          long_description=_read('README.rst').decode('utf-8'),
+          long_description=_read('PyPI.rst').decode('utf-8'),
           author='Alex Clark (Fork Author)',
           author_email='aclark@aclark.net',
-          url='https://python-pillow.org',
+          url='https://github.com/uploadcare/pillow-simd',
           classifiers=[
               "Development Status :: 6 - Mature",
               "Topic :: Multimedia :: Graphics",
