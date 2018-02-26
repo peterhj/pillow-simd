@@ -1,15 +1,15 @@
-#include "Python.h"
 #include "Imaging.h"
 #include <emmintrin.h>
 #include <mmintrin.h>
 #include <smmintrin.h>
+#include <math.h>
 
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
 
-void static inline
+inline static void
 ImagingLineBoxBlur32(UINT32 *lineOut, UINT32 *lineIn, int lastx, int radius, int edgeA,
     int edgeB, UINT32 ww, UINT32 fw)
 {
@@ -123,7 +123,7 @@ ImagingLineBoxBlur32(UINT32 *lineOut, UINT32 *lineIn, int lastx, int radius, int
 }
 
 
-void static inline
+inline static void
 ImagingLineBoxBlurZero32(UINT32 *lineOut, UINT32 *lineIn, int lastx, int edgeA,
     int edgeB, UINT32 ww, UINT32 fw)
 {
@@ -183,7 +183,7 @@ ImagingLineBoxBlurZero32(UINT32 *lineOut, UINT32 *lineIn, int lastx, int edgeA,
 }
 
 
-void static inline
+inline static void
 ImagingLineBoxBlur8(UINT8 *lineOut, UINT8 *lineIn, int lastx, int radius, int edgeA,
     int edgeB, UINT32 ww, UINT32 fw)
 {
@@ -249,7 +249,7 @@ ImagingLineBoxBlur8(UINT8 *lineOut, UINT8 *lineIn, int lastx, int radius, int ed
 }
 
 
-void static inline
+inline static void
 ImagingLineBoxBlurZero8(UINT8 *lineOut, UINT8 *lineIn, int lastx, int edgeA,
     int edgeB, UINT32 ww, UINT32 fw)
 {

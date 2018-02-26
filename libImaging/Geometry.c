@@ -1,4 +1,5 @@
 #include "Imaging.h"
+#include <math.h>
 
 /* For large images rotation is an inefficient operation in terms of CPU cache.
    One row in the source image affects each column in destination.

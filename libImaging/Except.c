@@ -74,10 +74,12 @@ void
 ImagingSectionEnter(ImagingSectionCookie* cookie)
 {
     /* pass */
+    (void)cookie;
 }
 
 void
 ImagingSectionLeave(ImagingSectionCookie* cookie)
 {
     /* pass */
+    (void)cookie;
 }

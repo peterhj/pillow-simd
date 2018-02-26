@@ -35,11 +35,11 @@
    See: http://stackoverflow.com/a/26588074/253146 */
 #if defined(__x86_64__) && defined(__SSE__) &&  ! defined(__NO_INLINE__) && \
     ! defined(__clang__) && defined(GCC_VERSION) && (GCC_VERSION < 40900)
-static float __attribute__((always_inline)) inline _i2f(int v) {
+inline static float __attribute__((always_inline)) _i2f(int v) {
     float x;
     __asm__("xorps %0, %0; cvtsi2ss %1, %0" : "=X"(x) : "r"(v) );
     return x;
 }
 #else
-static float inline _i2f(int v) { return (float) v; }
+inline static float _i2f(int v) { return (float) v; }
 #endif
