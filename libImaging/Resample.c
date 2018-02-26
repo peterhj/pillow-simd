@@ -144,8 +144,8 @@ static inline UINT8 clip8(int in, int precision)
 int
 precompute_coeffs(int inSize, float in0, float in1, int outSize,
                   struct filter *filterp, int **boundsp, double **kkp) {
-    double support, scale, filterscale;
-    double center, ww, ss;
+    double support, scale, filterscale, invscale;
+    double center, ww;
     int xx, x, ksize, xmin, xmax;
     int *bounds;
     double *kk, *k;
@@ -155,6 +155,7 @@ precompute_coeffs(int inSize, float in0, float in1, int outSize,
     if (filterscale < 1.0) {
         filterscale = 1.0;
     }
+    invscale = 1.0 / filterscale;
 
     /* determine support size (length of resampling filter) */
     support = filterp->support * filterscale;
@@ -187,19 +188,18 @@ precompute_coeffs(int inSize, float in0, float in1, int outSize,
     for (xx = 0; xx < outSize; xx++) {
         center = in0 + (xx + 0.5) * scale;
         ww = 0.0;
-        ss = 1.0 / filterscale;
         // Round the value
-        xmin = (int) (center - support + 0.5);
+        xmin = (int) floor(center - support);
         if (xmin < 0)
             xmin = 0;
         // Round the value
-        xmax = (int) (center + support + 0.5);
+        xmax = (int) ceil(center + support);
         if (xmax > inSize)
             xmax = inSize;
         xmax -= xmin;
         k = &kk[xx * ksize];
         for (x = 0; x < xmax; x++) {
-            double w = filterp->filter((x + xmin - center + 0.5) * ss);
+            double w = filterp->filter((x + xmin - center + 0.5) * invscale);
             k[x] = w;
             ww += w;
         }

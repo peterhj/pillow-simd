@@ -404,6 +404,7 @@ extern int ImagingSavePPM(Imaging im, const char* filename);
 /* Utility functions */
 extern UINT32 ImagingCRC32(UINT32 crc, UINT8* buffer, int bytes);
 
+#ifndef PILLOW_DISABLE_PYTHON
 /* Codecs */
 typedef struct ImagingCodecStateInstance *ImagingCodecState;
 typedef int (*ImagingCodec)(Imaging im, ImagingCodecState state,
@@ -485,6 +486,7 @@ extern int ImagingZipEncode(Imaging im, ImagingCodecState state,
                             UINT8* buffer, int bytes);
 extern int ImagingZipEncodeCleanup(ImagingCodecState state);
 #endif
+#endif
 
 typedef void (*ImagingShuffler)(UINT8* out, const UINT8* in, int pixels);
 
@@ -501,6 +503,7 @@ extern ImagingShuffler ImagingFindUnpacker(const char* mode,
 extern ImagingShuffler ImagingFindPacker(const char* mode,
                                          const char* rawmode, int* bits_out);
 
+#ifndef PILLOW_DISABLE_PYTHON
 struct ImagingCodecStateInstance {
     int count;
     int state;
@@ -514,14 +517,17 @@ struct ImagingCodecStateInstance {
     void *context;
     PyObject *fd;
 };
+#endif
 
 
 
+#ifndef PILLOW_DISABLE_PYTHON
 /* Codec read/write python fd */
 extern Py_ssize_t _imaging_read_pyFd(PyObject *fd, char* dest, Py_ssize_t bytes);
 extern Py_ssize_t _imaging_write_pyFd(PyObject *fd, char* src, Py_ssize_t bytes);
 extern int _imaging_seek_pyFd(PyObject *fd, Py_ssize_t offset, int whence);
 extern Py_ssize_t _imaging_tell_pyFd(PyObject *fd);
+#endif
 
 
 
