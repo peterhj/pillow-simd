@@ -1,5 +1,6 @@
 #include "Imaging.h"
 
+#include <assert.h>
 #include <math.h>
 #include <emmintrin.h>
 #include <mmintrin.h>
@@ -190,13 +191,16 @@ precompute_coeffs(int inSize, float in0, float in1, int outSize,
         ww = 0.0;
         // Round the value
         xmin = (int) floor(center - support);
-        if (xmin < 0)
+        if (xmin < 0) {
             xmin = 0;
+        }
         // Round the value
         xmax = (int) ceil(center + support);
-        if (xmax > inSize)
+        if (xmax > inSize) {
             xmax = inSize;
+        }
         xmax -= xmin;
+        assert(xmax <= ksize);
         k = &kk[xx * ksize];
         for (x = 0; x < xmax; x++) {
             double w = filterp->filter((x + xmin - center + 0.5) * invscale);
@@ -204,8 +208,9 @@ precompute_coeffs(int inSize, float in0, float in1, int outSize,
             ww += w;
         }
         for (x = 0; x < xmax; x++) {
-            if (ww != 0.0)
+            if (ww != 0.0) {
                 k[x] /= ww;
+            }
         }
         // Remaining values should stay empty if they are used despite of xmax.
         for (; x < ksize; x++) {
